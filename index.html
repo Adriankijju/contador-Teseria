@@ -4,24 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>████████</title>
+    
+    <!-- Favicon de Candado usando Data URL SVG (No requiere archivo extra) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a3a3a3'><path d='M12 17a2 2 0 100-4 2 2 0 000 4zm6-9h-1V6a5 5 0 00-10 0v2H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V10a2 2 0 00-2-2zM9 6a3 3 0 116 0v2H9V6z'/></svg>">
+    
+    <!-- Tailwind CSS para la estructura responsiva -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes Monoespaciadas de Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
         body {
-            /* Fuente limpia y monoespaciada */
             font-family: 'Space Mono', monospace;
-            background-color: #020202; /* Casi negro puro */
-            color: #a3a3a3; /* Gris claro/apagado */
-            overflow: hidden;
+            background-color: #050505; /* Negro muy profundo pero no 100% puro */
+            color: #d1d5db; /* Tailwind gray-300 */
             margin: 0;
-            padding: 0;
-            user-select: none; /* Evita seleccionar el texto para más inmersión */
+            overflow: hidden; /* Evita barras de desplazamiento */
+            user-select: none;
         }
 
-        /* Líneas de escaneo CRT extremadamente sutiles */
+        /* 1. Efecto de Viñeta (Sombreado oscuro en los bordes) */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85) 100%);
+            pointer-events: none;
+            z-index: 40;
+        }
+
+        /* 2. Rayas de Monitor CRT mejoradas */
         .scanlines {
             position: fixed;
             top: 0;
@@ -32,114 +49,123 @@
                 to bottom,
                 rgba(255, 255, 255, 0),
                 rgba(255, 255, 255, 0) 50%,
-                rgba(0, 0, 0, 0.15) 50%,
-                rgba(0, 0, 0, 0.15)
+                rgba(0, 0, 0, 0.25) 50%,
+                rgba(0, 0, 0, 0.25)
             );
             background-size: 100% 4px;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.6;
+            opacity: 0.4;
         }
 
-        /* Parpadeo apenas imperceptible */
-        .flicker {
-            animation: flicker-animation 0.2s infinite alternate;
+        /* 3. Parpadeo sutil de pantalla vieja */
+        .flicker-screen {
+            animation: flicker 0.15s infinite alternate;
         }
 
-        @keyframes flicker-animation {
-            0% { opacity: 0.98; }
+        @keyframes flicker {
+            0% { opacity: 0.97; }
             100% { opacity: 1; }
         }
 
-        /* Cursor parpadeante clásico */
-        .cursor {
+        /* 4. Cursor de terminal parpadeante */
+        .cursor-blink {
             display: inline-block;
-            width: 10px;
+            width: 0.6em;
             height: 1.1em;
-            background-color: #a3a3a3;
+            background-color: #d1d5db;
             vertical-align: text-bottom;
-            animation: blink 1s step-end infinite;
-            margin-left: 4px;
+            animation: blinker 1s step-end infinite;
+            margin-left: 6px;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
+        @keyframes blinker {
             50% { opacity: 0; }
+        }
+
+        /* Text shadow sutil para simular brillo de fósforo blanco/gris */
+        .glow-text {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen relative p-4 flicker">
-    
-    <!-- Capa de efecto visual CRT -->
-    <div class="scanlines"></div>
 
-    <div class="z-10 w-full max-w-5xl mx-auto flex flex-col items-center text-center space-y-16">
+<body class="flex flex-col items-center justify-center min-h-screen relative p-4 flicker-screen">
+    
+    <!-- Capas de efectos visuales -->
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+
+    <div class="z-10 w-full max-w-6xl mx-auto flex flex-col items-center text-center space-y-12 md:space-y-20 glow-text">
         
-        <!-- Bloque superior (Top text y subtítulo) -->
+        <!-- Bloque de Cabecera -->
         <div id="header-container" class="space-y-6">
-            <h1 class="text-2xl md:text-3xl tracking-[0.3em] opacity-80">
+            <h1 class="text-3xl md:text-5xl tracking-[0.4em] text-gray-500 mb-8 opacity-70">
                 ████████
             </h1>
-            <p class="text-lg md:text-xl text-gray-500 tracking-widest uppercase">
-                Desencriptando<span class="cursor"></span>
+            <p class="text-xl md:text-2xl text-gray-400 tracking-widest uppercase">
+                Desencriptando<span class="cursor-blink"></span>
             </p>
         </div>
 
-        <!-- Contenedor del Contador (Sin bordes ni cajas) -->
-        <div id="countdown-container" class="flex items-center justify-center space-x-2 md:space-x-8 w-full">
+        <!-- Contenedor del Contador Principal -->
+        <div id="countdown-container" class="flex flex-row items-center justify-center space-x-3 md:space-x-8 w-full">
             
             <!-- Días -->
-            <div class="flex flex-col items-center">
-                <span id="days" class="text-6xl md:text-9xl font-bold tracking-tight text-gray-300">00</span>
-                <span class="text-xs md:text-sm mt-4 tracking-[0.2em] text-gray-600">DÍAS</span>
+            <div class="flex flex-col items-center w-20 md:w-40">
+                <span id="days" class="text-6xl md:text-[10rem] font-bold tracking-tighter text-white leading-none">00</span>
+                <span class="text-xs md:text-base mt-4 md:mt-8 tracking-[0.3em] text-gray-500">DÍAS</span>
             </div>
             
-            <span class="text-4xl md:text-7xl font-light text-gray-700 pb-8 md:pb-12">:</span>
+            <span class="text-4xl md:text-8xl font-light text-gray-700 pb-8 md:pb-16">:</span>
 
             <!-- Horas -->
-            <div class="flex flex-col items-center">
-                <span id="hours" class="text-6xl md:text-9xl font-bold tracking-tight text-gray-300">00</span>
-                <span class="text-xs md:text-sm mt-4 tracking-[0.2em] text-gray-600">HORAS</span>
+            <div class="flex flex-col items-center w-20 md:w-40">
+                <span id="hours" class="text-6xl md:text-[10rem] font-bold tracking-tighter text-white leading-none">00</span>
+                <span class="text-xs md:text-base mt-4 md:mt-8 tracking-[0.3em] text-gray-500">HORAS</span>
             </div>
             
-            <span class="text-4xl md:text-7xl font-light text-gray-700 pb-8 md:pb-12">:</span>
+            <span class="text-4xl md:text-8xl font-light text-gray-700 pb-8 md:pb-16">:</span>
 
             <!-- Minutos -->
-            <div class="flex flex-col items-center">
-                <span id="minutes" class="text-6xl md:text-9xl font-bold tracking-tight text-gray-300">00</span>
-                <span class="text-xs md:text-sm mt-4 tracking-[0.2em] text-gray-600">MINUTOS</span>
+            <div class="flex flex-col items-center w-20 md:w-40">
+                <span id="minutes" class="text-6xl md:text-[10rem] font-bold tracking-tighter text-white leading-none">00</span>
+                <span class="text-xs md:text-base mt-4 md:mt-8 tracking-[0.3em] text-gray-500">MINUTOS</span>
             </div>
             
-            <span class="text-4xl md:text-7xl font-light text-gray-700 pb-8 md:pb-12 md:flex hidden">:</span>
+            <span class="text-4xl md:text-8xl font-light text-gray-700 pb-8 md:pb-16 hidden sm:block">:</span>
 
-            <!-- Segundos (Oculto en móviles muy pequeños para que quepa bien, visible en md+) -->
-            <div class="flex-col items-center md:flex hidden">
-                <span id="seconds" class="text-6xl md:text-9xl font-bold tracking-tight text-gray-300">00</span>
-                <span class="text-xs md:text-sm mt-4 tracking-[0.2em] text-gray-600">SEGUNDOS</span>
+            <!-- Segundos (Oculto en móviles muy estrechos para evitar desbordamiento horizontal) -->
+            <div class="flex-col items-center w-20 md:w-40 hidden sm:flex">
+                <span id="seconds" class="text-6xl md:text-[10rem] font-bold tracking-tighter text-white leading-none">00</span>
+                <span class="text-xs md:text-base mt-4 md:mt-8 tracking-[0.3em] text-gray-500">SEGUNDOS</span>
             </div>
 
         </div>
         
-        <!-- Fila extra para los segundos en móviles -->
-        <div id="mobile-seconds-container" class="flex flex-col items-center md:hidden mt-8">
-            <span id="mobile-seconds" class="text-6xl font-bold tracking-tight text-gray-300">00</span>
-            <span class="text-xs mt-4 tracking-[0.2em] text-gray-600">SEGUNDOS</span>
+        <!-- Fila extra para los Segundos en móviles (Mejora la legibilidad) -->
+        <div id="mobile-seconds-container" class="flex flex-col items-center sm:hidden mt-6">
+            <span id="mobile-seconds" class="text-6xl font-bold tracking-tighter text-white leading-none">00</span>
+            <span class="text-xs mt-4 tracking-[0.3em] text-gray-500">SEGUNDOS</span>
         </div>
 
-        <!-- Mensaje de finalización -->
-        <div id="unlocked-message" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
-            <h2 class="text-3xl md:text-5xl font-bold uppercase tracking-[0.3em] text-gray-200">
-                SISTEMA DESBLOQUEADO
+        <!-- Mensaje de finalización (Oculto por defecto) -->
+        <div id="unlocked-message" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full px-4">
+            <h2 class="text-4xl md:text-6xl font-bold uppercase tracking-[0.4em] text-white glow-text">
+                SISTEMA<br class="md:hidden"><span class="hidden md:inline"> </span>DESBLOQUEADO
             </h2>
+            <div class="mt-8 text-gray-500 tracking-widest text-sm md:text-base">
+                ACCESO CONCEDIDO // PROTOCOLO INICIADO
+            </div>
         </div>
 
     </div>
 
     <script>
-        // Fecha objetivo: 10 de octubre de 2026 a las 18:00:00 UTC
+        // Configurar la fecha objetivo exacta: 10 de octubre de 2026 a las 18:00:00 UTC
         const targetDate = new Date("2026-10-10T18:00:00Z").getTime();
 
-        // Elementos del DOM
+        // Referencias a elementos DOM
         const daysEl = document.getElementById('days');
         const hoursEl = document.getElementById('hours');
         const minutesEl = document.getElementById('minutes');
@@ -151,21 +177,23 @@
         const mobileSecondsContainer = document.getElementById('mobile-seconds-container');
         const unlockedMessage = document.getElementById('unlocked-message');
 
-        // Formato para añadir el 0 delante (ej: 05)
+        // Función para formatear números con dos dígitos (ej: 0 -> "00", 5 -> "05")
         function formatNumber(num) {
             return num < 10 ? '0' + num : num;
         }
 
-        // Bucle de actualización
+        // Lógica principal de actualización del contador
         function updateCountdown() {
             const now = new Date().getTime();
             const distance = targetDate - now;
 
+            // Cálculos matemáticos de tiempo
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+            // Actualización del HTML (Asegurando que no baje de 0)
             daysEl.innerText = formatNumber(Math.max(0, days));
             hoursEl.innerText = formatNumber(Math.max(0, hours));
             minutesEl.innerText = formatNumber(Math.max(0, minutes));
@@ -174,19 +202,21 @@
             secondsEl.innerText = formattedSeconds;
             mobileSecondsEl.innerText = formattedSeconds;
 
+            // Detener y mostrar mensaje cuando se alcanza la fecha
             if (distance <= 0) {
                 clearInterval(countdownInterval); 
                 
-                // Ocultar todo
+                // Ocultar interfaz de carga
                 headerContainer.classList.add('hidden');
                 countdownContainer.classList.add('hidden');
                 mobileSecondsContainer.classList.add('hidden');
                 
-                // Mostrar texto final
+                // Mostrar interfaz desbloqueada
                 unlockedMessage.classList.remove('hidden');
             }
         }
 
+        // Inicialización inmediata para evitar retraso visual y arranque del intervalo
         updateCountdown();
         const countdownInterval = setInterval(updateCountdown, 1000);
     </script>
